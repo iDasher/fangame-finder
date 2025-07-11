@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Fuse from 'fuse.js'
 
 interface Fangame {
@@ -15,6 +15,8 @@ export default function SearchBar({ fangames }: { fangames: Fangame[] }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<Fangame[]>([])
   const [selected, setSelected] = useState<number>(-1)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const dropdownRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     const fuse = new Fuse(fangames, {
@@ -30,6 +32,22 @@ export default function SearchBar({ fangames }: { fangames: Fangame[] }) {
     }
     setSelected(-1)
   }, [query, fangames])
+
+  // Close dropdown on outside click or navigation
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setResults([])
+      }
+    }
+    window.addEventListener('mousedown', handleClick)
+    return () => window.removeEventListener('mousedown', handleClick)
+  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'ArrowDown') {
@@ -51,6 +69,7 @@ export default function SearchBar({ fangames }: { fangames: Fangame[] }) {
   return (
     <div className="w-full max-w-lg relative">
       <input
+        ref={inputRef}
         type="text"
         placeholder="Search fangames..."
         value={query}
@@ -61,7 +80,10 @@ export default function SearchBar({ fangames }: { fangames: Fangame[] }) {
       />
 
       {results.length > 0 && (
-        <ul className="absolute left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded shadow-lg max-h-72 overflow-y-auto space-y-2">
+        <ul
+          ref={dropdownRef}
+          className="absolute left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded shadow-lg max-h-72 overflow-y-auto space-y-2"
+        >
           {results.map((game, idx) => (
             <li key={game.slug} className={selected === idx ? 'bg-blue-100 rounded' : ''}>
               <a
@@ -71,7 +93,7 @@ export default function SearchBar({ fangames }: { fangames: Fangame[] }) {
               >
                 {game.banner && (
                   <img
-                    src={game.banner.replace('/src/content', '/content')}
+                    src={game.banner}
                     alt={game.title + ' banner'}
                     className="w-12 h-12 object-cover rounded"
                     loading="lazy"
