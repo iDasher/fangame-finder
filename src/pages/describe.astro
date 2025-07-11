@@ -1,0 +1,11 @@
+---
+import SearchBar from '@/components/SearchBar'
+import { getFangames } from '@/lib/getFangames'
+
+const url = new URL(Astro.request.url)
+const searchQuery = url.searchParams.get("query") || ""
+const fangames = await getFangames()
+---
+
+<h1 class="text-2xl font-bold mb-4">Search by Description</h1>
+<SearchBar client:load fangames={fangames} initialQuery={searchQuery} />
