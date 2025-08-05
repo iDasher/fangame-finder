@@ -70,7 +70,7 @@ export default function FangameGrid({ fangames }: { fangames: Fangame[] }) {
   return (
     <div>
       <div className="flex flex-col items-center mb-4">
-        <h1 className="text-5xl font-extrabold mb-6 text-center tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
+        <h1 className="fangame-gradient text-5xl font-extrabold mb-6 text-center tracking-tight drop-shadow-lg">
           Fangame Finder
         </h1>
         <input

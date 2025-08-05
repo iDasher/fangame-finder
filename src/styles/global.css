@@ -52,7 +52,7 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(97.502% 0.03601 163.437);
   --foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -65,10 +65,12 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+  --header-gradient-from: oklch(33.767% 0.10979 140.973);
+  --header-gradient-to: oklch(62.024% 0.1883 141.132);
 }
 
 [data-theme='dark'] {
-  --background: oklch(0.145 0 0);
+  --background: oklch(22.223% 0.04169 161.999);
   --foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -81,6 +83,8 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
+  --header-gradient-from: oklch(86.596% 0.13111 139.445);
+  --header-gradient-to: oklch(84.836% 0.27835 141.378);
 }
 
 @layer base {
@@ -91,4 +95,35 @@
   ::file-selector-button {
     @apply border-border outline-ring/50 tracking-tight;
   }
+}
+
+.fangame-gradient {
+  background-image: linear-gradient(to right, var(--header-gradient-from), var(--header-gradient-to));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+body, .gradient-bg {
+  /* Default (light mode) gradient */
+  background: linear-gradient(
+    135deg,
+    oklch(95.428% 0.05932 151.122) 0%,
+    oklch(94.031% 0.04433 159.759) 50%,
+    oklch(90.325% 0.10546 159.202) 100%
+  );
+  background-attachment: fixed;
+}
+
+[data-theme='dark'] body,
+[data-theme='dark'] .gradient-bg {
+  /* Dark mode gradient */
+  background: linear-gradient(
+    135deg,
+    oklch(22.223% 0.04169 161.999) 0%,
+    oklch(30% 0.04 200) 50%,
+    oklch(18% 0.03 250) 100%
+  );
+  background-attachment: fixed;
 }
